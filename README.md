@@ -10,6 +10,7 @@ The Bundle will allow you to create entries to a Database table using Elements f
 
 You can add the Bundle by cloning this repository or adding it directly to your composer.json
 
+``` php
 "repositories": [
 {
     "type": "symfony-bundle",
@@ -25,6 +26,7 @@ You can add the Bundle by cloning this repository or adding it directly to your 
 }]
 
 The Namespace will be registered by autoloading with Composer but to use the integrated features for symfony you have to register the Bundle.
+```
 
 ``` php
 # app/AppKernel.php
