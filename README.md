@@ -28,7 +28,8 @@ can start developing.
 ### Service-Container
 
 The simplest way to use the Bundle is to get the Container and request the
-state of the xml read Feature. 
+state of the xml read Feature which returns an array of elements from the Config.xml File
+to be save to Database table "output". It returns an error if the file could not be open.
 
 ``` php
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -74,8 +75,8 @@ class DefaultController extends Controller {
 
 ### Service Parameter 
 
-The Config.xml file location has been passed to the service 
-contruct method to be reed.
+The Config.xml file location has been passed by $fileLocator to the service 
+contruct method to the read Feature which reads the relative data from the file.
 
 ``` php
 namespace Acme\ReginaldBundle\Service;
@@ -120,134 +121,3 @@ class XmlReader {
 
 ```
 
-### Argument-Usage
-
-On every check you can give arguments to the check if you want to specify
-the check. The Arguments for a Flag can be definied by an array on the validation
-method. The Keys must be named like the condition itself. Please Note that if the
-Condition does not support the Arguments they would be ignored.
-
-``` php
-# src/AcmeBundle/Resources/views/Index/index.html.twig
-{% if has_feature('FooBarFeature', {'device': 'tablet'}) %}
-    <p>Lorem Ipsum Dolor ...</p>
-{% endif %}
-```
-
-### Creating a Condition
-
-At first the Condition must be created. The Condition must implement the
-ConditionInterface. There is a general context available.
-
-``` php
-<?php
-# src/AcmeBundle/FeatureFlags/Condition/Foo.php
-namespace AcmeBundle\FeatureFlags\Condition;
-
-use DZunke\FeatureFlagsBundle\Toggle\Conditions\AbstractCondition;
-use DZunke\FeatureFlagsBundle\Toggle\Conditions\ConditionInterface;
-
-class Foo extends AbstractCondition implements ConditionInterface
-{
-    public function validate($config, $argument = null)
-    {
-        // [..] Implement your Methods to Validate the Feature
-
-        return true;
-    }
-
-    public function __toString()
-    {
-        return 'Foo';
-    }
-}
-```
-
-After the Class was created it must be defined as a Tagged-Service. With this
-Tag and the Alias the Condition would be loaded. At this point there is many
-space to extend the Condition by adding calls or arguments.
-
-``` yaml
-# src/AcmeBundle/Resources/config/services.yml
-services:
-    acme.feature_flags.condition.fo:
-        class: DZunke\FeatureFlagsBundle\Toggle\Conditions\Foo
-        calls:
-            - [setContext, [@dz.feature_flags.context]]
-        tags:
-            -  { name: dz.feature_flags.toggle.condition, alias: foo }
-```
-
-## Configuration
-
-### Example
-
-``` yaml
-d_zunke_feature_flags:
-    flags:
-        FooFeature: # feature will always be disabled
-            default: false
-        BarFeature: # feature will only be enabled for a list of special ClientIps
-            conditions_config:
-                ip_address: [192.168.0.1]
-        BazFeature: # the feature will be enabled for the half of the users
-            conditions_config:
-                percentage:
-                    percentage: 50
-                    cookie: ExampleCookieForFeature
-                    lifetime: 3600
-        FooBarFeature:
-            conditions_config:
-                device:
-                    tablet: "/ipad|playbook|android|kindle|opera mobi|arm|(^.*android(?:(?!mobile).)*$)/i"
-                    mobile: "/iphone|ipod|bb10|meego|blackberry|windows\\sce|palm|windows phone|((android.*mobile))|mobile/i"
-```
-
-## Available Conditions
-
-``` yaml
-hostname: [example.local, www.example.local]
-```
-
-``` yaml
-ip_address: [192.168.0.1, 192.168.0.2]
-```
-
-``` yaml
-percentage:
-  cookie: NameThisCookieForTheUser # Default: 84a0b3f187a1d3bfefbb51d4b93074b1e5d9102a
-  percentage: 29 # Default: 100
-  lifetime: 3600 # Default: 86400 - 1 day
-```
-
-``` yaml
-device:
-  name: regex # give regex for each valid device
-```
-
-``` yaml
-# See php.net/datetime
-date:
-  start_date: "2016-09-01" # Start date, accepts DateTime constructor values. Defaults to "now".
-  end_date: "2016-09-03" # End date, accepts DateTime constructor values. Defaults to "now".
-```
-
-### Reference
-
-``` yaml
-d_zunke_feature_flags:
-    # the default state to return for non-existent features
-    default:              true
-    # feature flags for the built system
-    flags:
-        # Prototype
-        feature:
-            # general active state for the flag - if conditions used it would be irrelevant
-            default:              false
-            # list of configured conditions which must be true to set this flag active
-            conditions_config:    []
-```
-
-## License
-
-FeatureFlagsBundle is licensed under the MIT license.
