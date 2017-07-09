@@ -10,6 +10,19 @@ The Bundle will allow you to create entries to a Database table using Elements f
 
 You can add the Bundle by cloning this repository
 
+The Namespace will be registered by autoloading with Composer but to use the integrated features for symfony you have to register the Bundle.
+
+``` php
+# app/AppKernel.php
+public function registerBundles()
+{
+    $bundles = [
+        // [..]
+        new Acme\ReginaldBundle\AcmeReginaldBundle(),
+    ];
+}
+```
+
 ### Create from Database schema
 
 src\Acme\ReginaldBundle/Resources/config/doctrine/Output.orm.xml
@@ -33,17 +46,6 @@ acme_reginald:
 ``` bash
 $ php bin/console console assets:install --symlink
  web/
-```
-
-``` php
-# app/AppKernel.php
-public function registerBundles()
-{
-    $bundles = [
-        // [..]
-        new Acme\ReginaldBundle\AcmeReginaldBundle(),
-    ];
-}
 ```
 
 ## Usage
