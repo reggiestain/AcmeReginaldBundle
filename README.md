@@ -22,7 +22,7 @@ public function registerBundles()
 }
 ```
 
-### Create from Database schema
+### Create Database entities from schema
 
 src\Acme\ReginaldBundle/Resources/config/doctrine/Output.orm.xml
 
