@@ -8,25 +8,7 @@ The Bundle will allow you to create entries to a Database table using Elements f
 
 ## Setup
 
-You can add the Bundle by cloning this repository or adding it directly to your composer.json
-
-``` php
-"repositories": [
-{
-    "type": "symfony-bundle",
-    "symfony-bundle": {
-        "name": "AcmeReginaldBundle"
-        "version": "1.0",
-        "source": {
-            "url": "", //git url
-            "type": "git",
-            "reference": "master" //git branch-name
-        }
-    }
-}]
-
-The Namespace will be registered by autoloading with Composer but to use the integrated features for symfony you have to register the Bundle.
-```
+You can add the Bundle by cloning this repository
 
 ``` php
 # app/AppKernel.php
@@ -34,7 +16,7 @@ public function registerBundles()
 {
     $bundles = [
         // [..]
-        new DZunke\FeatureFlagsBundle\DZunkeFeatureFlagsBundle(),
+        new Acme\ReginaldBundle\AcmeReginaldBundle(),
     ];
 }
 ```
@@ -46,24 +28,47 @@ can start developing.
 ### Service-Container
 
 The simplest way to use the Bundle is to get the Container and request the
-state of a Feature. **Note**: Features that are not configured are enabled by
-default.
+state of the xml read Feature. **Note**: The Config.xml file location has been passed to the service 
+contruct method to read.
 
 ``` php
-# src/AcmeBundle/Controller/IndexController.php
-<?php
+namespace Acme\ReginaldBundle\Service;
 
-namespace AcmeBundle\Controller;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-class DefaultController extends Controller
-{
-    public function indexAction()
-    {
-        if ($this->get('dz.feature_flags.toggle')->isActive('FooFeature')) {
-           // [...]
-        }
-        // [...]
+use Symfony\Component\HttpKernel\Config\FileLocator;
+
+class XmlReader {
+
+    protected $xml;
+
+    public function __construct(FileLocator $fileLocator) {
+        $this->xml = $fileLocator->locate('@AcmeReginaldBundle/Resources/uploads/config.xml');
     }
+
+    /**
+     *  Get course elements from XML File.
+     *
+     * @return mixed[] $items Array elements from XML File.
+     */
+    public function read() {
+        if (file_exists($this->xml)) {
+
+            $xml = simplexml_load_file($this->xml);
+
+            $title = $xml->children('blti', true)->title;
+            $desc = $xml->children('blti', true)->description;
+            $lauchUrl = $xml->children('blti', true)->launch_url;
+            $iconUrl = $xml->children('blti', true)->extensions->children('lticm', true)->property[1];
+            
+            $Array = ['success'=>['title'=>$title,'desc'=>$desc, 'lauch_url'=>$lauchUrl,'icon_url'=>$iconUrl]];
+            
+        } else {
+             
+            $Array = ['error'=>['message'=>'Failed to open '.$this->xml]];
+        }
+        
+        return $Array;
+    }
+
 }
 
 ```
