@@ -35,15 +35,19 @@
             <div class="row" style="margin-bottom: 20px;margin-top:20px">
                 <div class="col-lg-12" style="text-align: center">  
                     {% for flash_message in app.session.flashbag.get('notice')%}
-                        {{flash_message}}  
+                        <div class="alert alert-success alert-dismissable">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>                             
+                            <strong>Success!</strong> {{flash_message}}
+                        </div>
+                        </div>    
                     {% endfor %}               
+                </div>
             </div>
-            </div>
-            {% block body %}{% endblock %} 
+        {% block body %}{% endblock %} 
     </div>
     <!-- /.container -->
     {% block javascripts %}
-        <script src="{{asset('bundles/acmereginald/js/jquery.min.js')}}"></script>
+        <script src="{{asset('bundles/acmereginald/js/jquery.js')}}"></script>
     {% endblock %}
 </body>
 </html>
