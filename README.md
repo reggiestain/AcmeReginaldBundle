@@ -9,6 +9,7 @@ The Bundle will allow you to create entries to a Database table using Elements f
 ## Setup
 
 You can add the Bundle by cloning this repository
+
 The Namespace will be registered by autoloading with Composer but to use the integrated features for symfony you have to register the Bundle.
 
 ``` php
