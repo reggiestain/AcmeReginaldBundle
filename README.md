@@ -72,7 +72,7 @@ class DefaultController extends Controller {
         //Returned dataArray from service method
         $dataArray = $xmlReader->read();
         
-        if(!empty($dataArray['success']))
+        if(!empty($dataArray['success'])){
             
            $Output = new Output();
         
@@ -86,14 +86,16 @@ class DefaultController extends Controller {
            $em->flush();
            
            $this->addFlash('notice', 'Course Info has been saved successfully.');
-           
-        if(!empty($dataArray['error']))  
+         }
+         
+        if(!empty($dataArray['error'])) {
             
             $this->addFlash('notice', $dataArray['error']['message']);
-              
+         }
+         
         return $this->render('AcmeReginaldBundle:Default:index.html.twig');
         
-        }
+       }
     }
 ```
 
