@@ -1,28 +1,29 @@
-# Symfony FeatureFlagsBundle [![License](https://poser.pugx.org/dzunke/feature-flags-bundle/license.svg)](https://packagist.org/packages/dzunke/feature-flags-bundle)
+# Symfony 3 AcmeReginaldBundle
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/600780bb-3719-4a13-836c-375af89dd81d/mini.png)](https://insight.sensiolabs.com/projects/600780bb-3719-4a13-836c-375af89dd81d) [![TravisCI](https://api.travis-ci.org/DZunke/FeatureFlagsBundle.svg)](https://travis-ci.org/DZunke/FeatureFlagsBundle)
+The Bundle will allow you to create entries to a Database table using Elements from the provided Config.xml File.
 
-The Bundle will allow you to implement Feature Flags to your Application.
-Please Note that there is no Interface available, so the Flags must be
-configured directly in Symfony-Configs.
-
-**Use Versions >= 2.0 if Symfony 3.0 Support is wanted!**
+**Use Versions Symfony 3.0**
 
 ## Documentation
 
 ## Setup
 
-You can add the Bundle by running [Composer](http://getcomposer.org) on your shell or adding it directly to your composer.json
+You can add the Bundle by cloning this repository or adding it directly to your composer.json
 
-``` bash
-php composer.phar require dzunke/feature-flags-bundle:dev-master
-```
+"repositories": [
+{
+    "type": "symfony-bundle",
+    "symfony-bundle": {
+        "name": "AcmeReginaldBundle"
+        "version": "1.0",
+        "source": {
+            "url": "", //git url
+            "type": "git",
+            "reference": "master" //git branch-name
+        }
+    }
+}]
 
-``` json
-"require" :  {
-    "dzunke/feature-flags-bundle": "dev-master"
-}
-```
 The Namespace will be registered by autoloading with Composer but to use the integrated features for symfony you have to register the Bundle.
 
 ``` php
