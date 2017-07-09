@@ -10,6 +10,31 @@ The Bundle will allow you to create entries to a Database table using Elements f
 
 You can add the Bundle by cloning this repository
 
+### Create from Database schema
+
+src\Acme\ReginaldBundle/Resources/config/doctrine/Output.orm.xml
+
+``` bash
+php bin/console doctrine:generate:entities  AcmeReginaldBundle
+```
+
+### Enable routing configuration
+
+``` yaml
+# app/config/routing.yml
+acme_reginald:
+    resource: '@AcmeReginaldBundle/Controller/'
+    type:     annotation
+    prefix:   /
+```
+
+### Refresh asset folder
+
+``` bash
+$ php bin/console console assets:install --symlink
+ web/
+```
+
 ``` php
 # app/AppKernel.php
 public function registerBundles()
@@ -20,8 +45,6 @@ public function registerBundles()
     ];
 }
 ```
-Without any Configuration all Features will be enabled! But at this point you
-can start developing.
 
 ## Usage
 
